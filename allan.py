@@ -1,7 +1,7 @@
 import numpy as np
 import argparse, os, time
 import pandas as pd
-from multiprocessing import Pool
+#from multiprocessing import Pool
 from datetime import datetime as dt
 pd.set_option('display.float_format', lambda x: '%.6e' % x)
 
@@ -27,7 +27,7 @@ parser.add_argument("filename", nargs="+", type=str, help="Path(s) to the data f
 parser.add_argument("-b", "--blocks", default=1, type=float, help="Number of 1MB blocks to read concurrently aka chunk size (default 1).")
 parser.add_argument("-a", "--avars", default="nonoverlap", choices=["overlap", "nonoverlap", "both"], type=str, help="Choose which variance to calculate (default nonoverlap).")
 parser.add_argument("-T", "--tmin", default=0, type=int, help="Smallest cluster size exponent T=2^(tmin) to calculate with (default tmin=0).")
-parser.add_argument("-s", "--sum", action="store_true", help="Whether to sum each chunk with the previous (default false).")
+parser.add_argument("-s", "--sum", action="store_true", help="Whether to sum each chunk with the previous (default false).") #EXPERIMENTAL
 parser.add_argument("-c", "--count", default=0, type=int, help="Count of chunks to consider (default all).")
 parser.add_argument("-o", "--offset", default=0, type=float, help="File offset in MB (default 0).")
 parser.add_argument("-d", "--outdir", default="", type=str, help="Save avars to .dat files in a specified directory.")
