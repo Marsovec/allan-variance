@@ -107,13 +107,13 @@ for filename in args.filename:
         #format dataframe
         avar_nonoverlap_df = pd.DataFrame(avar_nonoverlap.values(), index=avar_nonoverlap.keys())
         avar_nonoverlap_df = "\n".join(avar_nonoverlap_df.to_string().split("\n")[1:])
-        print(f"#T{(len(str(T)))*' '}avar_nonoverlap(T)")
+        print(f"#T [bit]{(len(str(T)))*' '}avar_nonoverlap(T) [bit^2]")
         print(avar_nonoverlap_df)
         #save to a file, if necessary
         if args.outdir:
             if args.avars == "nonoverlap" or args.avars == "both":
                 with open(os.path.join(args.outdir, filename.replace("/", "_")+"_offset="+str(offset)+"_nonoverlap.dat"), "w") as f:
                     f.write(f"#POSITION: {offset}\n")
-                    f.write(f"#T{(len(str(T)))*' '}avar_nonoverlap(T)\n")
+                    f.write(f"#T [bit]{(len(str(T)))*' '}avar_nonoverlap(T) [bit^2]\n")
                     f.write(avar_nonoverlap_df)
     print("---")
