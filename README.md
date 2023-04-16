@@ -2,27 +2,41 @@
 
 This repository tracks development on the command-line utility to calculate Allan variance from raw (byte) data, written in Python. A script to plot the calculated variances is also provided.
 
+## Terminology
+
+### Chunk
+
+A chunk is a part of the input file that is calculated upon, usually in units of bytes (as chunks are unpacked into bits only afterwards). For practical purposes, each chunk can thus be considered as a separate input file. The input file is separated into chunks because it would otherwise prove impractical or otherwise unwanted to assess the entire file as a whole (like the [RAM usage problems mentioned later](#note-on-ram-usage)).
+
+### Cluster
+
+A cluster is a part of the chunk of data that is being assessed. Cluster sizes are denoted by the letter $T$ further below and are all in units of bits. A chunk is broken up in this way so that we can calculate per-cluster averages which are defined below (also note that it can be broken down in an [overlapping](#overlapping-allan-variance) or a [non-overlapping](#non-overlapping-allan-variance) fashion). A cluster in position $k$ is usually denoted by $\Omega_k$, though this is rarely used as we are only interested in the averages.
+
+### Cluster average
+
+A cluster average is the mean value of all elements in a specific cluster. This quantity is denoted by $\overline{\Omega}_k$, where $k$ is the index of the cluster. The calculation is done by way of a sum of all elements divided by the size of the cluster. The notation $\overline{\Omega}_k(T)$ is also used, where $T$ is the cluster size.
+
 ## Background
 
-The calculator is built using formulae specified in [this article](https://www.allaboutcircuits.com/technical-articles/intro-to-allan-variance-analysis-non-overlapping-and-overlapping-allan-variance/). Essentially, a file is read as raw data and then converted to a sequence of N elements with a possible value of 0 or 1 (each byte is unpacked into bits). The sequence is then split into K clusters, with each cluster having a length of T. Here we separate between calculating overlapping and non-overlapping Allan variance.
+The calculator is built using formulae specified in [this article](https://www.allaboutcircuits.com/technical-articles/intro-to-allan-variance-analysis-non-overlapping-and-overlapping-allan-variance/). Essentially, a file is read as raw data and then converted to a sequence of $N$ elements with a possible value of 0 or 1 (each byte is unpacked into bits). The sequence is then split into $K$ clusters, with each cluster having a length of $T$. Here we separate between calculating overlapping and non-overlapping Allan variance.
 
 ### Overlapping Allan variance
 
-The overlapping variant is calculated with clusters that are selected by shifting the selection interval by 1 for each selection of size T. This separates the sequence into N-T+1 clusters. The variance is then calculated 
+The overlapping variant is calculated with clusters that are selected by shifting the selection interval by 1 for each selection of size $T$. This separates the sequence into $N-T+1$ clusters. The variance is then calculated 
 
 $$\sigma^2(T) = \frac{1}{2(N-2T+1)}\sum_{k=1}^{N-2T+1}(\overline{\Omega}_{k+T}(T)-\overline{\Omega}_k(T))^2$$
 
-The sum is over the per-cluster averages $\overline{\Omega}_k$, where k is the clusters index.
+The sum is over the per-cluster averages $\overline{\Omega}_k$, where $k$ is the index of the cluster.
 
 ### Non-overlapping Allan variance
 
-The non-overlapping variant is calculated with clusters that each begin where the previous one has ended in the sequence. The sequence is thus separated into N/T clusters. The variance is calculated using
+The non-overlapping variant is calculated with clusters that each begin where the previous one has ended in the sequence. The sequence is thus separated into $N/T$ clusters. The variance is calculated using
 
 $$\sigma^2(T) = \frac{1}{2(K-1)}\sum_{k=1}^{K-1}(\overline{\Omega}_{k+1}(T)-\overline{\Omega}_k(T))^2$$
 
 ### Comparison between both variants
 
-Non-overlapping variance is calculated much faster than overlapping simply because the former has far less chunks to work with (N/T vs. N-T+1). Also, based on experience, the variants don't differ much in practice, so this repository assumes the non-overlapping variant as default.
+Non-overlapping variance is calculated much faster than overlapping simply because the former has far less clusters to consider ($N/T$ vs. $N-T+1$). Also, based on experience, the variants don't differ much in practice, so this repository assumes the non-overlapping variant as default.
 
 ## Note on RAM usage
 
