@@ -4,5 +4,4 @@ datetime
 matplotlib
 scipy
 argparse
-os
 time
