@@ -81,6 +81,7 @@ The script requires at least one provided `filename` argument which contains the
 * `-c`, `--count` - number of chunks to consider, any integer value is allowed, defaults to all
 * `-o`, `--offset` - offset for where to start reading data in the file in MB, any float value is allowed, defaults to 0
 * `-d`, `--outdir` - path to the output directory for the generated .dat files, any string value is allowed, defaults to no output
+* `-q`, `--quiet` - whether to have no verbose results in STDOUT
 
 If output path directory is specified, `outdir` is populated with a `_INFO.txt` file that contains the arguments used and .dat files with variances per chunk. Each .dat file contains two columns: the variance in regards to the selected cluster size T. The cluster sizes for which calculations are done are selected from an exponential function $T=2^n$ where n ranges from 0 to $\log_2(B/2)$ (B is the chunk size as specified by `-b`).
 
