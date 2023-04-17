@@ -31,6 +31,7 @@ parser.add_argument("-s", "--sum", action="store_true", help="Whether to sum eac
 parser.add_argument("-c", "--count", default=0, type=int, help="Count of chunks to consider (default all).")
 parser.add_argument("-o", "--offset", default=0, type=float, help="File offset in MB (default 0).")
 parser.add_argument("-d", "--outdir", default="", type=str, help="Save avars to .dat files in a specified directory.")
+parser.add_argument("-q", "--quiet", action="store_true", help="Quiet, i.e. no output in STDOUT (default false).")
 args = parser.parse_args()
 if args.tmin < 0:
     args.tmin = 0
@@ -108,7 +109,8 @@ for filename in args.filename:
         avar_nonoverlap_df = pd.DataFrame(avar_nonoverlap.values(), index=avar_nonoverlap.keys())
         avar_nonoverlap_df = "\n".join(avar_nonoverlap_df.to_string().split("\n")[1:])
         print(f"#T [bit]{(len(str(T)))*' '}avar_nonoverlap(T) [bit^2]")
-        print(avar_nonoverlap_df)
+        if not args.quiet:
+            print(avar_nonoverlap_df)
         #save to a file, if necessary
         if args.outdir:
             if args.avars == "nonoverlap" or args.avars == "both":
