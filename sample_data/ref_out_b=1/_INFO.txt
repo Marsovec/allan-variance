@@ -1,0 +1,5 @@
+Calculations started on 17.04.2023 16:34:40
+chunk size: 8000000
+offset: 0
+avars: nonoverlap
+summed: False
